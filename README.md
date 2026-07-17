@@ -1,52 +1,33 @@
-# 🏀 NBA Player Wiki Search
+# 💬 NBA Talk — a serverless NBA discussion forum
 
-An interactive, single-file web demo: type any NBA player's name and get live
-autocomplete suggestions plus a player card (photo, bio summary, link to the
-full article) — all powered by the free **Wikipedia REST API**. No API key,
-no build step, no dependencies.
+**Live site:** https://yaoyugua.github.io/day_10/
+
+A discussion-channel forum ("Where will LeBron go?", "Trade deadline talk", …)
+in a single static `index.html` — no server, no database, no build step.
+Powered by [giscus](https://giscus.app): every channel is a thread in this
+repo's [GitHub Discussions](https://github.com/yaoyugua/day_10/discussions),
+and visitors sign in with GitHub to post.
 
 ## Features
 
-- 🔍 **Live autocomplete** — debounced search-as-you-type, biased toward basketball results
-- ⌨️ **Keyboard navigation** — arrow keys + Enter to pick a suggestion
-- 🃏 **Player cards** — photo, description, and article summary
-- 🎲 **Random legend** button + quick-pick chips for famous players
-- 🌙 Dark, GitHub-flavored UI in one `index.html`
-
-## 💬 Forum (`forum.html`)
-
-A discussion-channel module ("Where will LeBron go?", "Trade deadline talk", …)
-powered by [giscus](https://giscus.app), which stores every thread in this
-repo's **GitHub Discussions** — still no server, still free. Visitors sign in
-with GitHub to post; each channel maps to one Discussion thread.
-
-Setup is already done for this repo: Discussions are enabled, the
-[giscus app](https://github.com/apps/giscus) is installed, and the `GISCUS`
-config block in `forum.html` points at the *General* category. New channels
-created in the UI become real Discussion threads the moment someone posts
-the first comment.
-
-## Run it
-
-Just open `index.html` in a browser — that's it.
-
-```bash
-open index.html        # macOS
-```
-
-## Publish with GitHub Pages
-
-1. Push this repo to GitHub
-2. Go to **Settings → Pages**
-3. Under *Build and deployment*, choose **Deploy from a branch** → `main` / `/ (root)`
-4. Your demo goes live at `https://<your-username>.github.io/<repo-name>/`
+- 📺 **Channels** — sidebar of discussion topics; each maps to one GitHub Discussion
+- ➕ **Create channel** — anyone can start a topic; the thread is created on
+  GitHub when the first comment is posted
+- 🔗 **Shareable links** — `?channel=Where%20will%20LeBron%20go%3F` deep-links a channel
+- 🌙 Dark, GitHub-flavored UI, hosted free on GitHub Pages
 
 ## How it works
 
-- Autocomplete uses the [MediaWiki search API](https://www.mediawiki.org/wiki/API:Search)
-  (`action=query&list=search`) with `origin=*` for CORS
-- Player cards use the [Wikipedia REST summary endpoint](https://en.wikipedia.org/api/rest_v1/)
-  (`/page/summary/{title}`)
+`index.html` embeds the giscus widget with `data-mapping="specific"`, using the
+channel name as the discussion term — so each channel gets its own thread.
+Posts live in GitHub Discussions (category: *General*), which means moderation,
+reactions, and notifications all come free from GitHub.
 
-Both are public, key-free, and CORS-friendly — which is why this works as a
-static page anywhere, including GitHub Pages.
+## Local development
+
+giscus won't load from a `file://` page, so serve the folder:
+
+```bash
+python3 -m http.server 8765
+# then open http://localhost:8765/
+```
