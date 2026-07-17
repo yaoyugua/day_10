@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>💬 NBA Talk — Forum</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #f97316;
+    --accent-soft: rgba(249, 115, 22, 0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: radial-gradient(1200px 600px at 50% -100px, #1b2735 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 32px 16px 80px;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+
+  nav { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 0.92rem; }
+  nav a:hover { color: var(--accent); }
+  nav .brand { color: var(--text); font-weight: 700; font-size: 1.05rem; }
+
+  header h1 { font-size: 1.9rem; letter-spacing: -0.5px; }
+  header p { color: var(--muted); margin-top: 6px; margin-bottom: 28px; }
+
+  .setup-banner {
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    font-size: 0.92rem;
+    line-height: 1.7;
+  }
+  .setup-banner strong { color: var(--accent); }
+  .setup-banner ol { margin: 8px 0 0 20px; }
+  .setup-banner a { color: var(--accent); }
+  .setup-banner code {
+    background: var(--panel); padding: 2px 6px; border-radius: 6px;
+    font-size: 0.85em; border: 1px solid var(--border);
+  }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+  @media (max-width: 760px) { .layout { grid-template-columns: 1fr; } }
+
+  .sidebar {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    align-self: start;
+  }
+  .sidebar h2 { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 12px; }
+  .channel {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%;
+    text-align: left;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    background: none;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.93rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .channel:hover { background: var(--panel-2); }
+  .channel.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .channel .hash { color: var(--muted); font-weight: 700; }
+  .channel.active .hash { color: var(--accent); }
+
+  .new-channel { margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+  .new-channel input {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    margin-bottom: 8px;
+  }
+  .new-channel input:focus { border-color: var(--accent); }
+  .new-channel button {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .new-channel button:hover { filter: brightness(1.1); }
+  .hint { font-size: 0.78rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+
+  .thread {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    min-height: 400px;
+  }
+  .thread-title { font-size: 1.35rem; margin-bottom: 4px; }
+  .thread-sub { color: var(--muted); font-size: 0.88rem; margin-bottom: 20px; }
+  .thread-sub a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <nav>
+    <a class="brand" href="index.html">🏀 NBA Hub</a>
+    <a href="index.html">Player Search</a>
+    <a href="forum.html" style="color: var(--accent); font-weight: 600;">💬 Forum</a>
+  </nav>
+
+  <header>
+    <h1>💬 NBA Talk</h1>
+    <p>Pick a channel or start your own. Sign in with GitHub to post — every thread lives in this repo's GitHub Discussions.</p>
+  </header>
+
+  <div class="setup-banner" id="setup-banner" style="display:none">
+    <strong>⚙️ One-time setup needed (repo owner only):</strong>
+    <ol>
+      <li>Enable Discussions: repo <a href="https://github.com/yaoyugua/day_10/settings" target="_blank" rel="noopener">Settings</a> → Features → check <strong>Discussions</strong></li>
+      <li>Install the <a href="https://github.com/apps/giscus" target="_blank" rel="noopener">giscus app</a> on the <code>day_10</code> repo</li>
+      <li>Visit <a href="https://giscus.app" target="_blank" rel="noopener">giscus.app</a>, enter <code>yaoyugua/day_10</code>, pick the <strong>Announcements</strong>-type category (or General), and copy the <code>data-category-id</code> value into <code>forum.html</code> where it says <code>PASTE_CATEGORY_ID_HERE</code></li>
+    </ol>
+  </div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <h2>Channels</h2>
+      <div id="channel-list"></div>
+      <div class="new-channel">
+        <input id="new-channel-input" type="text" placeholder="New channel name…" maxlength="80" />
+        <button id="new-channel-btn">＋ Create channel</button>
+        <div class="hint">The thread is created on GitHub when the first comment is posted.</div>
+      </div>
+    </aside>
+
+    <main class="thread">
+      <div class="thread-title" id="thread-title"></div>
+      <div class="thread-sub">
+        Threads are stored in
+        <a href="https://github.com/yaoyugua/day_10/discussions" target="_blank" rel="noopener">GitHub Discussions</a>
+        — you can also reply there.
+      </div>
+      <div id="giscus-slot"></div>
+    </main>
+  </div>
+
+</div>
+
+<script>
+(() => {
+  // ── giscus config ─────────────────────────────────────────────
+  const GISCUS = {
+    repo: "yaoyugua/day_10",
+    repoId: "R_kgDOTbsxYQ",
+    category: "General",
+    categoryId: "DIC_kwDOTbsxYc4DBZyc",
+  };
+  // ──────────────────────────────────────────────────────────────
+
+  const DEFAULT_CHANNELS = [
+    "Where will LeBron go?",
+    "Trade deadline talk",
+    "GOAT debate: MJ vs LeBron",
+    "Rookie watch",
+    "General NBA news",
+  ];
+
+  const LS_KEY = "nba-forum-channels";
+  const $list = document.getElementById("channel-list");
+  const $title = document.getElementById("thread-title");
+  const $slot = document.getElementById("giscus-slot");
+
+  const custom = JSON.parse(localStorage.getItem(LS_KEY) || "[]");
+  const channels = [...DEFAULT_CHANNELS, ...custom.filter(c => !DEFAULT_CHANNELS.includes(c))];
+
+  const params = new URLSearchParams(location.search);
+  let current = params.get("channel") || channels[0];
+  if (!channels.includes(current)) channels.push(current);
+
+  if (GISCUS.categoryId === "PASTE_CATEGORY_ID_HERE") {
+    document.getElementById("setup-banner").style.display = "block";
+  }
+
+  function renderChannels() {
+    $list.innerHTML = "";
+    for (const name of channels) {
+      const btn = document.createElement("button");
+      btn.className = "channel" + (name === current ? " active" : "");
+      btn.innerHTML = `<span class="hash">#</span><span></span>`;
+      btn.querySelector("span:last-child").textContent = name;
+      btn.addEventListener("click", () => selectChannel(name));
+      $list.appendChild(btn);
+    }
+  }
+
+  function selectChannel(name) {
+    current = name;
+    const url = new URL(location.href);
+    url.searchParams.set("channel", name);
+    history.replaceState(null, "", url);
+    renderChannels();
+    loadThread();
+  }
+
+  function loadThread() {
+    $title.textContent = "# " + current;
+    $slot.innerHTML = "";
+    const s = document.createElement("script");
+    s.src = "https://giscus.app/client.js";
+    s.async = true;
+    s.crossOrigin = "anonymous";
+    s.setAttribute("data-repo", GISCUS.repo);
+    s.setAttribute("data-repo-id", GISCUS.repoId);
+    s.setAttribute("data-category", GISCUS.category);
+    s.setAttribute("data-category-id", GISCUS.categoryId);
+    s.setAttribute("data-mapping", "specific");
+    s.setAttribute("data-term", current);
+    s.setAttribute("data-strict", "0");
+    s.setAttribute("data-reactions-enabled", "1");
+    s.setAttribute("data-emit-metadata", "0");
+    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-theme", "dark");
+    s.setAttribute("data-lang", "en");
+    $slot.appendChild(s);
+  }
+
+  document.getElementById("new-channel-btn").addEventListener("click", createChannel);
+  document.getElementById("new-channel-input").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") createChannel();
+  });
+
+  function createChannel() {
+    const input = document.getElementById("new-channel-input");
+    const name = input.value.trim();
+    if (!name) return;
+    if (!channels.includes(name)) {
+      channels.push(name);
+      custom.push(name);
+      localStorage.setItem(LS_KEY, JSON.stringify(custom));
+    }
+    input.value = "";
+    selectChannel(name);
+  }
+
+  renderChannels();
+  loadThread();
+})();
+</script>
+</body>
+</html>

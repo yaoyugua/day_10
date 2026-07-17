@@ -13,6 +13,19 @@ no build step, no dependencies.
 - 🎲 **Random legend** button + quick-pick chips for famous players
 - 🌙 Dark, GitHub-flavored UI in one `index.html`
 
+## 💬 Forum (`forum.html`)
+
+A discussion-channel module ("Where will LeBron go?", "Trade deadline talk", …)
+powered by [giscus](https://giscus.app), which stores every thread in this
+repo's **GitHub Discussions** — still no server, still free. Visitors sign in
+with GitHub to post; each channel maps to one Discussion thread.
+
+Setup is already done for this repo: Discussions are enabled, the
+[giscus app](https://github.com/apps/giscus) is installed, and the `GISCUS`
+config block in `forum.html` points at the *General* category. New channels
+created in the UI become real Discussion threads the moment someone posts
+the first comment.
+
 ## Run it
 
 Just open `index.html` in a browser — that's it.
